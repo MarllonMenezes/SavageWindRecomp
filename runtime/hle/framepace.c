@@ -48,6 +48,7 @@
 #include "../hle.h"
 #include "../settings.h"
 #include "../framepace.h"
+#include "../input_bind.h"
 #include "../window_size.h"
 
 extern volatile int g_movie_playing;  // runtime/hle/movie.c: video decoders running
@@ -192,7 +193,14 @@ void framepace_presented(uint64_t t, bool on_grid) {
 float rt_gui_speed(float game) {
     static int off = -1;
     if (off < 0) off = env_int("SAVAGEWIND_NO_GUI_SPEED", 0);
-    return off || !framepace_on() ? game : g_step;
+    if (off || !framepace_on()) return game;
+    // Quick selectors can show a black backdrop with the scaled GUI clock (#173). Keep their native step. The
+    // request's first GUI update precedes pause state 4, so include its d-pad input while playing, not just the pause.
+    extern uint64_t input_buttons_now(void);
+    const uint64_t selectors = (1ull << BIND_LEFT) | (1ull << BIND_UP) | (1ull << BIND_RIGHT);
+    bool quick = *(uint32_t *)(uintptr_t)PAUSE_STATE == 4 ||
+                 (!in_menu() && !in_event() && (input_buttons_now() & selectors));
+    return quick ? game : g_step;
 }
 
 // ------------------------------------------------------------------ the game's clock (ksys::VFR)
