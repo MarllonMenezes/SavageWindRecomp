@@ -74,6 +74,8 @@ Coming from Alpha 2: extract Alpha 3 to a new folder and set the game files up a
 code has to be built again); copy your `save` folder over to keep your progress. What's new is in
 [CHANGELOG.md](CHANGELOG.md).
 
+To keep game files, saves and caches on another drive, see [Moving the data folder](docs/data-folder.md).
+
 The setup and configuration screens show Savage Wind's own art. To see a picture of your own there instead, put it
 next to `savagewind.exe` (on Linux, in the data folder) as `splash.jpg` or `splash.png`; it's only read from your folder and never part of
 Savage Wind.
