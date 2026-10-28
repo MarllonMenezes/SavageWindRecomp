@@ -183,6 +183,27 @@ void bind_xbox_face_preset(void) {
     result(6, BIND_DEV_PAD, -1, -1);
 }
 
+bool bind_xbox_menu_layout(void) {
+    return bind_label_family() == 1 && g_bind_pad[BIND_A] == SDL_GAMEPAD_BUTTON_SOUTH &&
+           g_bind_pad[BIND_B] == SDL_GAMEPAD_BUTTON_EAST;
+}
+
+int bind_menu_button(int button, bool down, int16_t held[PADB_HOST_COUNT]) {
+    if (button < 0 || button >= PADB_HOST_COUNT) return button;
+    if (!down && held[button]) {
+        int mapped = held[button] - 1;
+        held[button] = 0;
+        return mapped;
+    }
+    int mapped = button;
+    if (bind_xbox_menu_layout()) {
+        if (button == SDL_GAMEPAD_BUTTON_SOUTH) mapped = SDL_GAMEPAD_BUTTON_EAST;
+        else if (button == SDL_GAMEPAD_BUTTON_EAST) mapped = SDL_GAMEPAD_BUTTON_SOUTH;
+    }
+    if (down) held[button] = (int16_t)(mapped + 1);
+    return mapped;
+}
+
 
 bool bind_capture_event(const SDL_Event *e) {
     int dev = cap_dev;

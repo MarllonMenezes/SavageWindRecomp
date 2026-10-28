@@ -8,7 +8,8 @@
 
 static uint64_t now;
 Uint64 SDL_GetTicks(void) { return now; }
-int input_pad_family(void) { return 1; }
+static int pad_family = 1;
+int input_pad_family(void) { return pad_family; }
 
 // Model the held state on the other side of the same event routing as the window loop. No window or controller.
 static bool held;
@@ -85,7 +86,27 @@ int main(void) {
     assert(bind_capture_event(&e));
     assert(g_bind_pad[BIND_A] == PADB_LTRIGGER);
     ended(2);  // ZL already uses the left trigger
+    // Pressing the preset must not leave menu confirm held when the mapping changes before the release.
+    int16_t menu_held[PADB_HOST_COUNT] = {0};
+    bind_reset(BIND_DEV_PAD);
+    assert(bind_menu_button(SDL_GAMEPAD_BUTTON_EAST, true, menu_held) == SDL_GAMEPAD_BUTTON_EAST);
+    bind_xbox_face_preset();
+    assert(bind_menu_button(SDL_GAMEPAD_BUTTON_EAST, false, menu_held) == SDL_GAMEPAD_BUTTON_EAST);
+    assert(bind_menu_button(SDL_GAMEPAD_BUTTON_SOUTH, true, menu_held) == SDL_GAMEPAD_BUTTON_EAST);
+    assert(bind_menu_button(SDL_GAMEPAD_BUTTON_SOUTH, false, menu_held) == SDL_GAMEPAD_BUTTON_EAST);
+    assert(bind_menu_button(SDL_GAMEPAD_BUTTON_EAST, true, menu_held) == SDL_GAMEPAD_BUTTON_SOUTH);
+    pad_family = 2;  // Other controller families retain their original menu layout.
+    assert(bind_menu_button(SDL_GAMEPAD_BUTTON_SOUTH, true, menu_held) == SDL_GAMEPAD_BUTTON_SOUTH);
+    assert(bind_menu_button(SDL_GAMEPAD_BUTTON_SOUTH, false, menu_held) == SDL_GAMEPAD_BUTTON_SOUTH);
+    pad_family = 1;
+    bind_reset(BIND_DEV_PAD);
+    assert(bind_menu_button(SDL_GAMEPAD_BUTTON_EAST, false, menu_held) == SDL_GAMEPAD_BUTTON_SOUTH);
+
     // Applying a preset must handle existing custom bindings without duplicating an input, and persist on reload.
+    bind_capture_begin(BIND_DEV_PAD, BIND_A);
+    e = (SDL_Event){0}; e.type = SDL_EVENT_GAMEPAD_AXIS_MOTION;
+    e.gaxis.axis = SDL_GAMEPAD_AXIS_LEFT_TRIGGER; e.gaxis.value = 32767;
+    assert(bind_capture_event(&e));
     bind_xbox_face_preset();
     assert(g_bind_pad[BIND_A] == SDL_GAMEPAD_BUTTON_SOUTH);
     assert(g_bind_pad[BIND_B] == SDL_GAMEPAD_BUTTON_EAST);

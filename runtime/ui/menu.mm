@@ -123,7 +123,7 @@ static ImGuiKey key_from_scancode(SDL_Scancode sc) {
     }
 }
 
-// Nintendo layout: the right face button (A) confirms, the bottom one (B) goes back.
+// The default menu layout: the right face button confirms, the bottom one goes back.
 static ImGuiKey key_from_pad(Uint8 b) {
     switch (b) {
     case SDL_GAMEPAD_BUTTON_EAST: return ImGuiKey_GamepadFaceDown;   // activate
@@ -255,7 +255,9 @@ bool menu_handle_event(const SDL_Event *e) {
             return true;
         }
         if (!capturing()) return false;
-        ImGuiKey k = key_from_pad(e->gbutton.button);
+        static int16_t held[PADB_HOST_COUNT];
+        int button = bind_menu_button(e->gbutton.button, down, held);
+        ImGuiKey k = key_from_pad((Uint8)button);
         if (g_sizes.load()) {  // Window size's list (in game): the buttons bound to A and B, wherever they are
             int b = e->gbutton.button;
             if (b == g_bind_pad[BIND_A]) k = ImGuiKey_GamepadFaceDown;

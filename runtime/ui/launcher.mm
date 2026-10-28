@@ -817,8 +817,8 @@ static bool menu_item(const char *label, bool enabled, bool *hovered = NULL, con
     return clicked;
 }
 
-// Controllers, as in the in-game menu (runtime/ui/menu.mm): read straight from SDL, Nintendo layout - the right face
-// button (A) confirms, the bottom one (B) goes back; d-pad / left stick move. (ImGui's own SDL gamepad handling is
+// Controllers, as in the in-game menu (runtime/ui/menu.mm): the fixed Nintendo layout, or Xbox A/B with that preset;
+// d-pad / left stick move. (ImGui's own SDL gamepad handling is
 // switched off: it used the Xbox layout and, per the user, didn't work on the start screen.)
 static ImGuiKey launcher_pad_key(Uint8 b) {
     switch (b) {
@@ -854,8 +854,11 @@ static bool launcher_pad_event(const SDL_Event &e) {
         io.BackendFlags |= ImGuiBackendFlags_HasGamepad;
         return true;
     case SDL_EVENT_GAMEPAD_BUTTON_DOWN: case SDL_EVENT_GAMEPAD_BUTTON_UP: {
-        ImGuiKey k = launcher_pad_key(e.gbutton.button);
-        if (k != ImGuiKey_None) io.AddKeyEvent(k, e.type == SDL_EVENT_GAMEPAD_BUTTON_DOWN);
+        static int16_t held[PADB_HOST_COUNT];
+        bool down = e.type == SDL_EVENT_GAMEPAD_BUTTON_DOWN;
+        int button = bind_menu_button(e.gbutton.button, down, held);
+        ImGuiKey k = launcher_pad_key((Uint8)button);
+        if (k != ImGuiKey_None) io.AddKeyEvent(k, down);
         return true;
     }
     case SDL_EVENT_GAMEPAD_AXIS_MOTION: {

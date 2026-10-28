@@ -1,7 +1,6 @@
 // Control remapping (runtime/hle/bindings.c): which controller button / key drives each Switch input. Edited from
 // the in-game menu's Controls tab and the start screen (runtime/ui/controls_ui.mm), saved in savagewind.ini.
-// Menus (the overlay, the start screen) never use these: they keep the fixed default layout, so no binding can lock
-// the player out.
+// Menus retain a safe fixed positional layout, except that the Xbox face preset swaps confirm and back on Xbox pads.
 #pragma once
 #include <stdbool.h>
 #include <stdint.h>
@@ -47,6 +46,9 @@ int bind_label_family(void);                   // the connected controller's fam
 void bind_reset(int dev);
 // Apply Xbox face-button positions, swapping conflicts with the existing bindings.
 void bind_xbox_face_preset(void);
+bool bind_xbox_menu_layout(void);
+// Map a physical menu button to the fixed Nintendo positions, keeping a press/release pair together.
+int bind_menu_button(int button, bool down, int16_t held[PADB_HOST_COUNT]);
 bool bind_is_default(int dev);
 bool bind_is_default_slot(int dev, int slot);
 

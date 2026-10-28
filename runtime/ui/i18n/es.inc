@@ -495,3 +495,4 @@ T("TAA: blends each frame with the ones before it, following the game's motion, 
 
 T("Use Xbox face buttons", "Usar botones Xbox")
 T("Xbox face buttons applied.", "Botones Xbox aplicados.")
+T("Menus: Xbox A selects, B goes back. F1, Esc, Back + Start or Home / Guide opens the in-game menu. Game icons follow the bindings.", "Menús: A de Xbox selecciona y B vuelve. F1, Esc, Back + Start o Home / Guide abre el menú del juego. Los iconos siguen la asignación.")

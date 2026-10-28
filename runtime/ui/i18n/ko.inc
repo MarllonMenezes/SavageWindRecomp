@@ -495,3 +495,4 @@ T("TAA: blends each frame with the ones before it, following the game's motion, 
 
 T("Use Xbox face buttons", "Xbox 버튼 배치 사용")
 T("Xbox face buttons applied.", "Xbox 버튼 배치를 적용했습니다.")
+T("Menus: Xbox A selects, B goes back. F1, Esc, Back + Start or Home / Guide opens the in-game menu. Game icons follow the bindings.", "메뉴에서 Xbox A는 선택, B는 뒤로 갑니다. F1, Esc, Back + Start 또는 Home / Guide로 게임 메뉴를 엽니다. 게임 아이콘은 설정을 따릅니다.")

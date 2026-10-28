@@ -495,3 +495,4 @@ T("TAA: blends each frame with the ones before it, following the game's motion, 
 
 T("Use Xbox face buttons", "ใช้ปุ่มแบบ Xbox")
 T("Xbox face buttons applied.", "ใช้ปุ่มแบบ Xbox แล้ว")
+T("Menus: Xbox A selects, B goes back. F1, Esc, Back + Start or Home / Guide opens the in-game menu. Game icons follow the bindings.", "ในเมนู A ของ Xbox เลือก และ B ย้อนกลับ F1, Esc, Back + Start หรือ Home / Guide เปิดเมนูในเกม ไอคอนในเกมตรงกับปุ่มที่ตั้งไว้")
