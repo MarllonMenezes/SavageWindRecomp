@@ -67,6 +67,7 @@ extern "C" void controls_bindings_draw(float scale) {
         if (kind == 5)
             snprintf(msg, sizeof msg, "%s", tr(rdev == BIND_DEV_PAD ? "Controller bindings reset to the defaults."
                                                                      : "Keyboard bindings reset to the defaults."));
+        else if (kind == 6) snprintf(msg, sizeof msg, "%s", tr("Xbox face buttons applied."));
         else if (kind == 1) snprintf(msg, sizeof msg, tr("%s is now %s."), tr(bind_input_name(rslot)), now);
         else if (kind == 2)
             snprintf(msg, sizeof msg, tr("%s is now %s; %s moved to %s (swapped)."), tr(bind_input_name(rslot)), now,
@@ -76,6 +77,11 @@ extern "C" void controls_bindings_draw(float scale) {
         if (kind == 1 || kind == 2 || kind == 5) settings_save();
     }
     if (msg[0]) ImGui::TextColored(ImVec4(0.93f, 0.76f, 0.33f, 1), "%s", msg);
+
+    if (ImGui::Button(tr("Use Xbox face buttons"))) {
+        bind_xbox_face_preset();
+        settings_save();
+    }
 
     if (ImGui::BeginTable("##binds", 3, ImGuiTableFlags_RowBg | ImGuiTableFlags_SizingStretchProp | ImGuiTableFlags_PadOuterX)) {
         ImGui::TableSetupColumn("Switch", ImGuiTableColumnFlags_WidthStretch, 1.0f);

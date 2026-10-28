@@ -85,6 +85,27 @@ int main(void) {
     assert(bind_capture_event(&e));
     assert(g_bind_pad[BIND_A] == PADB_LTRIGGER);
     ended(2);  // ZL already uses the left trigger
-    puts("binding capture: confirm releases, assignments, cancellation and timeout passed");
+    // Applying a preset must handle existing custom bindings without duplicating an input, and persist on reload.
+    bind_xbox_face_preset();
+    assert(g_bind_pad[BIND_A] == SDL_GAMEPAD_BUTTON_SOUTH);
+    assert(g_bind_pad[BIND_B] == SDL_GAMEPAD_BUTTON_EAST);
+    assert(g_bind_pad[BIND_X] == SDL_GAMEPAD_BUTTON_NORTH);
+    assert(g_bind_pad[BIND_Y] == SDL_GAMEPAD_BUTTON_WEST);
+    for (int i = 0; i < BIND_PAD_COUNT; i++)
+        for (int j = i + 1; j < BIND_PAD_COUNT; j++) assert(g_bind_pad[i] != g_bind_pad[j]);
+    FILE *f = tmpfile();
+    assert(f);
+    bind_settings_save(f);
+    rewind(f);
+    bind_reset(BIND_DEV_PAD);
+    char line[256], key[128], value[128];
+    while (fgets(line, sizeof line, f))
+        if (sscanf(line, "%127s = %127s", key, value) == 2) bind_settings_load(key, value);
+    fclose(f);
+    assert(g_bind_pad[BIND_A] == SDL_GAMEPAD_BUTTON_SOUTH);
+    assert(g_bind_pad[BIND_B] == SDL_GAMEPAD_BUTTON_EAST);
+    assert(g_bind_pad[BIND_X] == SDL_GAMEPAD_BUTTON_NORTH);
+    assert(g_bind_pad[BIND_Y] == SDL_GAMEPAD_BUTTON_WEST);
+    puts("binding capture and Xbox preset passed");
     return 0;
 }

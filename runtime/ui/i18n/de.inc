@@ -492,3 +492,6 @@ T("AMD FSR 3", "")
 T("AMD FSR 3: renders smaller, then rebuilds detail from past frames.", "AMD FSR 3: rendert kleiner und baut Details aus früheren Bildern wieder auf.")
 T("AMD FSR 3: it renders smaller and builds the full-resolution image from the frames before, following the game's motion: sharper and steadier than FSR 1, and anti-aliased (Anti-aliasing has no effect with it). Sharpening sets its own sharpening. NVIDIA DLSS (NVIDIA RTX graphics cards) is coming in a later version.", "AMD FSR 3: Es wird kleiner gerendert, und das Bild in voller Auflösung entsteht aus den vorherigen Bildern, den Bewegungen des Spiels folgend: schärfer und ruhiger als FSR 1 und kantengeglättet (Kantenglättung hat damit keine Wirkung). Nachschärfen stellt seine eigene Schärfung ein. NVIDIA DLSS (Grafikkarten NVIDIA RTX) kommt in einer späteren Version.")
 T("TAA: blends each frame with the ones before it, following the game's motion, so edges stay smooth and stop shimmering; slightly softer, use it with Sharpening.", "TAA: verrechnet jedes Bild mit den vorherigen, den Bewegungen des Spiels folgend, sodass Kanten glatt bleiben und nicht mehr flimmern; etwas weicher, am besten mit Nachschärfen.")
+
+T("Use Xbox face buttons", "Xbox-Tastenbelegung verwenden")
+T("Xbox face buttons applied.", "Xbox-Tastenbelegung angewendet.")

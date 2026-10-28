@@ -174,6 +174,16 @@ static void assign(int dev, int slot, int host) {
     result(other >= 0 ? 2 : 1, dev, slot, other);
 }
 
+void bind_xbox_face_preset(void) {
+    bind_capture_cancel();
+    assign(BIND_DEV_PAD, BIND_A, SDL_GAMEPAD_BUTTON_SOUTH);
+    assign(BIND_DEV_PAD, BIND_B, SDL_GAMEPAD_BUTTON_EAST);
+    assign(BIND_DEV_PAD, BIND_X, SDL_GAMEPAD_BUTTON_NORTH);
+    assign(BIND_DEV_PAD, BIND_Y, SDL_GAMEPAD_BUTTON_WEST);
+    result(6, BIND_DEV_PAD, -1, -1);
+}
+
+
 bool bind_capture_event(const SDL_Event *e) {
     int dev = cap_dev;
     if (dev < 0) return false;
